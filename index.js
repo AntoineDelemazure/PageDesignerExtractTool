@@ -32,9 +32,9 @@ class ParsedLibrary {
     }
 }
 
-function initExtract(someKindOfObject) {
+function initExtract(someKindOfObject, contentID) {
     let pl = new ParsedLibrary(someKindOfObject)
-    let root = pl.findContent('newsletter-LP')
+    let root = pl.findContent(contentID)
     let contentCollection = []
     if (root) {
         pl.extract(root, contentCollection)
@@ -65,8 +65,13 @@ function writeFinalFile(obj) {
 }
 
 
-fs.readFile(`${__dirname}/input/LE_NOM_DE_VOTRE_FICHIER_ICI`, (err, data) => {
-    parser.parseString(data, (err, result) => {
-        initExtract(result)
+var cmdLineArgs = process.argv.slice(2)
+if (cmdLineArgs.length >= 2) {
+    fs.readFile(cmdLineArgs[0], (err, data) => {
+        parser.parseString(data, (err, result) => {
+            initExtract(result, cmdLineArgs[1])
+        })
     })
-})
+} else {
+    console.log(`Two arguments expected : source and contentID`); // clog
+}
