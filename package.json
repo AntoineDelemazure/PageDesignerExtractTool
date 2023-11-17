@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "uuid": "^9.0.1",
     "xml2js": "^0.4.23"
   }
 }
