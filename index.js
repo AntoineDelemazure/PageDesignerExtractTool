@@ -9,6 +9,10 @@ class ParsedLibrary {
         this.parsedLibrary = parsedLibrary
     }
 
+    getLibraryID() {
+        return this.parsedLibrary.library['$']['library-id']
+    }
+
     findContent(contentID) {
         for (let content of this.parsedLibrary.library.content) {
             if (content['$']['content-id'] === contentID) {
@@ -50,17 +54,19 @@ function initExtract(someKindOfObject, contentID, renameContents) {
     if (root) {
         pl.extract(root, contentCollection, renameContents)
     }
-    writeFinalFile(contentCollection)
+    writeFinalFile(pl, contentCollection)
 }
 
-function writeFinalFile(obj) {
+function writeFinalFile(parsedLibrary, obj) {
     var builder = new xml2js.Builder();
+
+    let libraryID = parsedLibrary.getLibraryID()
 
     let finalObject = {
         library: {
             $: {
                 'xmlns': "http://www.demandware.com/xml/impex/library/2006-10-31",
-                'library-id': "YK_Library"
+                'library-id': libraryID
             },
             content: obj
         }
